@@ -7,20 +7,21 @@ if (!ini_get('date.timezone')) {
 
 require_once 'src/Feed.php';
 
-
-$atom = Feed::loadAtom('https://www.youtube.com/feeds/videos.xml?channel_id=UCsP3Clx2qtH2mNZ6KolVoZQ');
+$rss = Feed::loadRss('https://www.youtube.com/feeds/videos.xml?channel_id=UCsP3Clx2qtH2mNZ6KolVoZQ');
 
 ?>
 
-<h1><?php echo htmlSpecialChars($atom->title) ?></h1>
+<h1><?php echo htmlSpecialChars($rss->title) ?></h1>
 
-<?php foreach ($atom->entry as $entry): ?>
-	<h2><a href="<?php echo htmlSpecialChars($entry->link['href']) ?>"><?php echo htmlSpecialChars($entry->title) ?></a>
-	<small><?php echo date("j.n.Y H:i", (int) $entry->timestamp) ?></small></h2>
+<p><i><?php echo htmlSpecialChars($rss->description) ?></i></p>
 
-	<?php if ($entry->content['type'] == 'html'): ?>
-		<div><?php echo $entry->content ?></div>
+<?php foreach ($rss->item as $item): ?>
+	<h2><a href="<?php echo htmlSpecialChars($item->link) ?>"><?php echo htmlSpecialChars($item->title) ?></a>
+	<small><?php echo date("j.n.Y H:i", (int) $item->timestamp) ?></small></h2>
+
+	<?php if (isset($item->{'content:encoded'})): ?>
+		<div><?php echo $item->{'content:encoded'} ?></div>
 	<?php else: ?>
-		<p><?php echo htmlSpecialChars($entry->content) ?></p>
+		<p><?php echo htmlSpecialChars($item->description) ?></p>
 	<?php endif ?>
 <?php endforeach ?>
