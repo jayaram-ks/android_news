@@ -11,7 +11,7 @@ $rss = Feed::loadRss('https://www.youtube.com/feeds/videos.xml?channel_id=UCsP3C
 
 ?>
 
-<h1><?php echo htmlSpecialChars($rss->title) ?></h1>
+<h1><?php echo $rss->title ?></h1>
 
 <p><i><?php echo htmlSpecialChars($rss->description) ?></i></p>
 
